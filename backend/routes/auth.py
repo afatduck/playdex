@@ -10,14 +10,34 @@ import models
 
 router = APIRouter()
 
+def response_user(db: Session, user: models.User):
+    favorites = db.query(
+        models.favorites.c.game_id
+    ).where(
+        models.favorites.c.user_id == user.id
+    ).all()
+
+    favorites = [{
+        "game_id": game_id
+    } for game_id, in favorites]
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "favorites": favorites
+    }
+
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password): # type: ignore
-        raise HTTPException(status_code=401, detail="Incorrect username or password")
+        raise HTTPException(status_code=403, detail="Incorrect username or password")
     
     access_token = create_access_token(data={"sub": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "jwt": access_token, 
+        "user": response_user(db, user),
+        }
 
 @router.post("/register")
 def register(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -37,25 +57,19 @@ def register(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Dep
         raise HTTPException(status_code=400, detail="Username already taken!")    
 
     access_token = create_access_token(data={"sub": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "jwt": access_token, 
+        "user": response_user(db, user),
+        }
 
 @router.get("/me")
 def read_users_me(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
     ):
-    favorites = db.query(
-        models.favorites.c.game_id
-    ).where(
-        models.favorites.c.user_id == current_user.id
-    ).all()
 
-    favorites = [{
-        "game_id": game_id
-    } for game_id, in favorites]
-
+    access_token = create_access_token(data={"sub": current_user.username})
     return {
-        "id": current_user.id,
-        "username": current_user.username,
-        "favorites": favorites
-    }
+        "jwt": access_token, 
+        "user": response_user(db, current_user),
+        }

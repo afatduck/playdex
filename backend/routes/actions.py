@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Form, HTTPException
-from sqlalchemy import delete
+from sqlalchemy import delete, func
 from sqlalchemy.dialects.sqlite import insert
 from injections import get_current_user, get_db
 from sqlalchemy.orm import Session
@@ -74,7 +74,16 @@ def score(
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Game does not exist!")
     
-    return {"message": "success"}
+    new_score = db.query(
+        func.avg(models.Score.score).label("score")
+    ).where(
+        models.Score.game_id == game_id
+    ).first()[0] # type: ignore
+    
+    return {
+        "message": "success",
+        "new_score": round(new_score, 2) if new_score else None
+        }
 
 @router.post("/comment/{game_id}")
 def comment(
@@ -96,4 +105,14 @@ def comment(
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Game does not exist!")
     
-    return {"message": "success"}
+    id = db.query(
+        models.Comment.id
+    ).where(
+        models.Comment.game_id == game_id,
+        models.Comment.user_id == current_user.id
+    ).all()[-1][0]
+    
+    return {
+        "message": "success",
+        "comment_id": id
+        }

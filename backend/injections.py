@@ -15,7 +15,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 300
 if SECRET_KEY is None:
     raise Exception("Secret key not set!")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token", auto_error=False)
 
 def get_db():
     db = SessionLocal()
@@ -31,6 +31,8 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) # type: ignore
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    if token is None:
+        token = ""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]) # type: ignore
         username: str = payload.get("sub") # type: ignore
@@ -45,6 +47,9 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 def get_current_user_optional(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    if token is None:
+        return None
+    
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]) # type: ignore
         username: str = payload.get("sub") # type: ignore
