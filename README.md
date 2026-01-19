@@ -12,4 +12,4 @@ Završni rad iz kolegija Programiranje za Web.
 - U backend folderu napraviti virual environment i instalirati pakete iz `requirements.txt`
 - Opcionalno pokrenuti python datoteku `load_test_data.py`, trebati će joj vremena zbog hashiranja passworda.
 - U backend folderu pokrenuti komandu `uvicorn main:app --reload`
-- U frontend folderu pokrenuti `npm run dev`
+- U frontend folderu pokrenuti `npm install` i `npm run dev`
