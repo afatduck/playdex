@@ -3,6 +3,8 @@ import { useUserDispatch, useUserState } from '../UserState';
 import { useCallback, useState } from 'react';
 import { motion } from 'motion/react';
 
+import Logo from "../../public/logo.png"
+
 function Nav() {
   const loggedIn = !!useUserState();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -84,7 +86,7 @@ function Nav() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}>
         <Link to={'/'} onClick={() => setMenuOpen(false)}>
-          <img src="/logo.png" alt="PlayDEX Logo" className="w-50 h-15 mt-4" />
+          <img src={Logo} alt="PlayDEX Logo" className="w-50 h-15 mt-4" />
         </Link>
       </motion.div>
 

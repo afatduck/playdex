@@ -1,7 +1,9 @@
+import BackgroundImage from "../../public/background.gif"
+
 function BackgroundGif() {
   return (
     <img
-      src="/background.gif"
+      src={BackgroundImage}
       alt="PlayDEX Background"
       className="absolute inset-0 w-full h-full object-cover -z-10"
       style={{

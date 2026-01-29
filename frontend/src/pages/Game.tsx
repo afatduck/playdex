@@ -126,7 +126,7 @@ function GamePage() {
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-gray-700">Score:</span>
                 <span className="text-lg font-bold text-[#60BD2D]">
-                  {(game.average_score ?? 0).toFixed(1)}/10
+                  {(game.average_score ?? 0).toFixed(1)}/5
                 </span>
               </div>
               <div className="flex gap-3 items-center">
