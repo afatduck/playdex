@@ -32,7 +32,7 @@ def populate_users():
         for user in users:
             user = models.User(
                 username = user["username"],
-                hashed_password = hash_password(user["password"]),
+                hashed_password = "🎸",
             )
             db.add(user)
 
