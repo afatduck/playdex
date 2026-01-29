@@ -10,7 +10,6 @@ import RegisterPage from './pages/Register';
 import GamePage from './pages/Game';
 
 function App() {
-
   return (
     <UserProvider>
       <BrowserRouter>
@@ -22,11 +21,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/game/:gameId" element={<GamePage />} />
-          <Route path='*' element={<Page404/>} />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
   );
 }
 
-export default App;   
+export default App;

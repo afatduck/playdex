@@ -1,7 +1,7 @@
-import apiCall from "./apiCall"
+import apiCall from './apiCall';
 
 function getGame(gameId: string) {
-    return apiCall<GameExtended>("/api/game/" + gameId)
+  return apiCall<GameExtended>('/api/game/' + gameId);
 }
 
-export default getGame
+export default getGame;
