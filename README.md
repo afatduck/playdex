@@ -13,3 +13,7 @@ Završni rad iz kolegija Programiranje za Web.
 - Opcionalno pokrenuti python datoteku `load_test_data.py`, trebati će joj vremena zbog hashiranja passworda.
 - U backend folderu pokrenuti komandu `uvicorn main:app --reload`
 - U frontend folderu pokrenuti `npm install` i `npm run dev`
+
+## Live server
+
+Web stranica je (trenutno) dostupna na [https://playdex.fly.dev/](https://playdex.fly.dev/).
